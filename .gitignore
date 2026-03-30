@@ -1,0 +1,16 @@
+*.o
+*.out
+*.db
+tour_bureau
+test_tour_bureau
+.DS_Store
+task2/fibonacci_app
+task3/array_app
+task4/palindrome_checker
+task4/.cache/
+task6/.build/
+task6/.cache/
+task6/.swift-home/
+task7/.build/
+task7/.cache/
+task7/.swift-home/
