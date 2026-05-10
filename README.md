@@ -1,77 +1,36 @@
-# Project Name
+# Lab 7
 
-Laboratory Work 5. Objective-C and Swift console applications.
+Laboratory work 7 for `Технологии программирования для мобильных приложений`.
 
-# Description
+## Description
 
-This repository contains materials for laboratory work 5 in the course
-`Технологии программирования для мобильных приложений`.
+This repository contains the solution for variant `17`:
 
-Variant used for the implementation: `6`.
+- task 2.2 - simple graphics with a circle segment and a right trapezoid;
+- task 2.3 - animation demo with move, rotate, scale, opacity, and combo effects;
+- task 2.4 - gesture demo that changes the figure background.
 
-Implemented tasks:
+The Swift source is organized using MVC under [`lab7/ios`](./lab7/ios).
+The report and screenshot pack are published under [`docs/lab7`](./docs/lab7).
 
-- `task1` — Xcode and iOS Simulator familiarization notes;
-- `task2` — Objective-C app for the sum of the first `k` Fibonacci numbers;
-- `task3` — Objective-C app for array processing and maximum search;
-- `task4` — Swift REPL / `swiftc` / Playground palindrome task;
-- `task5` — Git and branching notes for Xcode;
-- `task6` — Swift Package Manager dictionary processing app;
-- `task7` — Swift MVC array processing app.
+## Installation
 
-The detailed report is published in
-[`docs/lab5/report.md`](./docs/lab5/report.md).
+Open the `lab7/ios` sources in Xcode and connect them to an iOS app target.
+The preview gallery used for screenshots is available in `lab7/preview/index.html`.
 
-# Installation
+## Usage
 
-Objective-C tasks:
+- Read the report: [`docs/lab7/report.md`](./docs/lab7/report.md)
+- View screenshots: [`docs/lab7/screenshots`](./docs/lab7/screenshots)
+- Review the source: [`lab7/ios`](./lab7/ios)
 
-```sh
-cd task2 && make
-cd task3 && make
-```
-
-Swift task 4:
-
-```sh
-cd task4
-swiftc palindrome.swift -o palindrome_checker
-```
-
-Swift Package Manager tasks:
-
-```sh
-cd task6 && swift build
-cd task7 && swift build
-```
-
-# Usage
-
-Quick start commands:
-
-```sh
-cd task2 && ./fibonacci_app
-cd task3 && ./array_app
-cd task4 && ./palindrome_checker
-cd task6 && swift run Task6App
-cd task7 && swift run Task7App
-```
-
-Recommended repository branch layout for publication:
-
-- `main` — top-level `README.md` and report link;
-- `feature-task2` — task 2 source code in `task2/`;
-- `feature-task3` — task 3 source code in `task3/`;
-- `feature-task4` — task 4 source code in `task4/`;
-- `feature-task6` — task 6 source code in `task6/`;
-- `feature-task7` — task 7 source code in `task7/`.
-
-# Authors
+## Authors
 
 Vanya Nasennik
 
-# Links and Additional Notes
+## Links and Additional Notes
 
-- Report: [`docs/lab5/report.md`](./docs/lab5/report.md)
-- Task 1 notes: [`task1/README.md`](./task1/README.md)
-- Task 5 notes: [`task5/README.md`](./task5/README.md)
+- Report: [`docs/lab7/report.md`](./docs/lab7/report.md)
+- Preview gallery: [`lab7/preview/index.html`](./lab7/preview/index.html)
+- Variant used in this repository: `17`
+

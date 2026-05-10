@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 7 Preview · Variant 17</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --panel: rgba(14, 19, 34, 0.82);
+      --panel-2: rgba(18, 28, 48, 0.92);
+      --stroke: rgba(255, 255, 255, 0.12);
+      --text: #eff4ff;
+      --muted: rgba(239, 244, 255, 0.72);
+      --blue: #78a8ff;
+      --blue-2: #9bc4ff;
+      --gold: #f3b15b;
+      --gold-2: #ffd48f;
+      --green: #39c7a2;
+      --green-2: #b0f2df;
+      --shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(106, 147, 255, 0.24), transparent 32%),
+        radial-gradient(circle at 80% 18%, rgba(88, 211, 179, 0.18), transparent 24%),
+        radial-gradient(circle at 50% 100%, rgba(255, 168, 93, 0.16), transparent 30%),
+        linear-gradient(160deg, #060912, #0b1122 45%, #070b14 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 74px 74px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.8), transparent 82%);
+      pointer-events: none;
+    }
+
+    .shell {
+      width: min(1440px, calc(100vw - 48px));
+      margin: 24px auto;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .intro, .phone {
+      background: var(--panel);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px);
+    }
+
+    .intro {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-height: calc(100vh - 48px);
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 39px;
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+    }
+
+    .subcopy {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      border: 1px solid var(--stroke);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+
+    .chip:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.24);
+    }
+
+    .chip.active {
+      background: linear-gradient(135deg, rgba(120, 168, 255, 0.26), rgba(57, 199, 162, 0.18));
+      border-color: rgba(148, 196, 255, 0.4);
+    }
+
+    .mini-card {
+      padding: 16px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .mini-card h2 {
+      margin: 0 0 10px;
+      font-size: 15px;
+    }
+
+    .mini-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    .phone {
+      padding: 18px;
+      min-height: calc(100vh - 48px);
+      display: flex;
+    }
+
+    .device {
+      width: 100%;
+      border-radius: 36px;
+      background:
+        radial-gradient(circle at top, rgba(120, 168, 255, 0.12), transparent 30%),
+        linear-gradient(180deg, rgba(11, 18, 32, 0.92), rgba(6, 10, 19, 0.96));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 18px;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 16px;
+    }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 6px;
+      border-radius: 18px;
+    }
+
+    .nav button {
+      border: 0;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.7);
+      border-radius: 13px;
+      padding: 12px 10px;
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .nav button.active {
+      background: linear-gradient(135deg, rgba(120, 168, 255, 0.92), rgba(57, 199, 162, 0.88));
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .workspace {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at top left, rgba(120, 168, 255, 0.14), transparent 28%),
+        linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      min-height: 640px;
+      padding: 20px;
+    }
+
+    .pane {
+      display: none;
+      height: 100%;
+      animation: fadeIn 220ms ease;
+    }
+
+    .pane.active { display: grid; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pane-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .pane-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .pane-kicker {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .toolbar button {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background 160ms ease, transform 160ms ease, border-color 160ms ease;
+    }
+
+    .toolbar button.active {
+      background: linear-gradient(135deg, rgba(120, 168, 255, 0.32), rgba(57, 199, 162, 0.2));
+      border-color: rgba(148, 196, 255, 0.38);
+    }
+
+    .stage {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+      min-height: 560px;
+    }
+
+    .card {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .card-inner {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .graphic-card {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 560px;
+      padding: 18px;
+    }
+
+    .graphic-panel {
+      margin-top: 8px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 14px;
+      height: 100%;
+    }
+
+    .figure-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .figure-box {
+      min-height: 360px;
+      border-radius: 22px;
+      background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    .figure-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 20%, rgba(255,255,255,0.08), transparent 38%);
+      pointer-events: none;
+    }
+
+    .figure-box .caption {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 10px;
+      color: rgba(255,255,255,0.72);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .svg-wrap {
+      position: absolute;
+      inset: 18px 18px 54px;
+      display: grid;
+      place-items: center;
+    }
+
+    svg { overflow: visible; }
+
+    .segment {
+      fill: url(#segmentGrad);
+      filter: drop-shadow(0 12px 18px rgba(0,0,0,0.26));
+    }
+
+    .trapezoid {
+      fill: url(#trapGrad);
+      filter: drop-shadow(0 12px 18px rgba(0,0,0,0.26));
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .legend span {
+      padding: 8px 10px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .graph-themes .theme {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .theme button {
+      width: 100%;
+      border: 0;
+      border-radius: 18px;
+      padding: 14px;
+      color: white;
+      text-align: left;
+      cursor: pointer;
+      min-height: 78px;
+      background: linear-gradient(135deg, #6174ff, #4dc6a5);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+      transition: transform 180ms ease, filter 180ms ease;
+    }
+
+    .theme button:hover, .effect-buttons button:hover, .gesture-buttons button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    .theme button.active {
+      outline: 2px solid rgba(255,255,255,0.28);
+    }
+
+    .theme button:nth-child(1) { background: linear-gradient(135deg, #f0b46a, #f9de9a); color: #231406; }
+    .theme button:nth-child(2) { background: linear-gradient(135deg, #5d8dff, #99d9ff); }
+    .theme button:nth-child(3) { background: linear-gradient(135deg, #8b61ff, #c195ff); }
+    .theme button:nth-child(4) { background: linear-gradient(135deg, #ff6f7a, #ffb469); }
+
+    .effect-buttons, .gesture-buttons {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .effect-buttons button, .gesture-buttons button {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border-radius: 18px;
+      padding: 12px 10px;
+      min-height: 84px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+
+    .effect-buttons button strong,
+    .gesture-buttons button strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .effect-buttons button span,
+    .gesture-buttons button span {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .effect-buttons button.active,
+    .gesture-buttons button.active {
+      background: linear-gradient(135deg, rgba(120,168,255,0.28), rgba(57,199,162,0.2));
+      border-color: rgba(148, 196, 255, 0.4);
+    }
+
+    .animation-stage {
+      position: relative;
+      min-height: 430px;
+      border-radius: 24px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(120, 168, 255, 0.18), transparent 30%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .motion-group {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: min(72%, 440px);
+      transform: translate(-50%, -50%);
+      display: grid;
+      gap: 20px;
+      transition: transform 700ms cubic-bezier(.2,.9,.24,1), opacity 700ms ease;
+    }
+
+    .motion-item {
+      height: 120px;
+      border-radius: 22px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      box-shadow: 0 18px 32px rgba(0,0,0,0.22);
+    }
+
+    .motion-item::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border-radius: 18px;
+    }
+
+    .motion-item.segment::before {
+      background: linear-gradient(135deg, #7fb2ff, #aed9ff);
+      clip-path: path("M 72 24 A 42 42 0 1 1 70 24 L 72 24 Z");
+    }
+
+    .motion-item.trapezoid::before {
+      background: linear-gradient(135deg, #f1ba71, #ffd08f);
+      clip-path: polygon(26% 20%, 88% 20%, 96% 80%, 18% 80%);
+    }
+
+    .animation-stage[data-effect="move"] .motion-group {
+      transform: translate(calc(-50% + 22px), calc(-50% - 10px));
+    }
+
+    .animation-stage[data-effect="rotate"] .motion-group {
+      transform: translate(-50%, -50%) rotate(7deg);
+    }
+
+    .animation-stage[data-effect="scale"] .motion-group {
+      transform: translate(-50%, -50%) scale(0.92);
+    }
+
+    .animation-stage[data-effect="opacity"] .motion-group {
+      opacity: 0.42;
+    }
+
+    .animation-stage[data-effect="combined"] .motion-group {
+      transform: translate(calc(-50% + 14px), calc(-50% - 6px)) rotate(6deg) scale(0.93);
+      opacity: 0.9;
+    }
+
+    .gesture-stage {
+      position: relative;
+      min-height: 430px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.16), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    }
+
+    .background-tile {
+      position: absolute;
+      inset: 22px;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .background-tile::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0.88;
+      background: var(--gesture-bg);
+    }
+
+    .gesture-shape {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .gesture-shape .badge {
+      width: 210px;
+      height: 210px;
+      border-radius: 34px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 18px 34px rgba(0,0,0,0.2);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+      font-weight: 700;
+      line-height: 1.2;
+      transition: transform 360ms ease, background 360ms ease;
+    }
+
+    .gesture-stage[data-gesture="rotation"] { --gesture-bg: linear-gradient(135deg, #376dff, #a4ccff); }
+    .gesture-stage[data-gesture="pinch"] { --gesture-bg: linear-gradient(135deg, #ef4d56, #ffcfcb); }
+    .gesture-stage[data-gesture="tap"] { --gesture-bg: linear-gradient(135deg, #1ea97f, #cdf2e5); }
+    .gesture-stage[data-gesture="longpress"] { --gesture-bg: linear-gradient(135deg, #f39d25, #ffe2a0); }
+    .gesture-stage[data-gesture="swipe"] { --gesture-bg: linear-gradient(135deg, #6d7684, #d3d9e1); }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255,255,255,0.6);
+      font-size: 12px;
+      padding: 2px 4px 0;
+    }
+
+    .footer strong {
+      color: white;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1120px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .intro {
+        min-height: auto;
+      }
+
+      .phone {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .stage {
+        grid-template-columns: 1fr;
+      }
+
+      .figure-row {
+        grid-template-columns: 1fr;
+      }
+
+      .theme button,
+      .effect-buttons,
+      .gesture-buttons {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .shell {
+        width: min(100vw - 24px, 1440px);
+        margin: 12px auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="intro">
+      <div class="eyebrow">TPMP · Laboratory work 7</div>
+      <h1>Variant 17</h1>
+      <p class="subcopy">
+        The preview reproduces the three self-study tasks from the lab:
+        graphics, animation, and gestures. The geometry follows the required
+        pair for variant 17: a circle segment and a right trapezoid.
+      </p>
+
+      <div class="chips" id="globalChips">
+        <button class="chip active" data-tab="graphics">Graphics</button>
+        <button class="chip" data-tab="animation">Animation</button>
+        <button class="chip" data-tab="gestures">Gestures</button>
+      </div>
+
+      <div class="mini-card">
+        <h2>What the report shows</h2>
+        <ul>
+          <li>Swift MVC structure for iOS.</li>
+          <li>Two custom figures drawn with Core Graphics.</li>
+          <li>Five animation effects.</li>
+          <li>Five gesture-based background states.</li>
+          <li>Screenshot pack for the final write-up.</li>
+        </ul>
+      </div>
+
+      <div class="mini-card">
+        <h2>Screenshot plan</h2>
+        <ul>
+          <li>1 cover screen + 4 graphics views.</li>
+          <li>5 animation states.</li>
+          <li>5 gesture states.</li>
+          <li>Several close-up shots of the shapes.</li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="phone">
+      <div class="device">
+        <div class="status">
+          <span>09:41</span>
+          <span>Lab 7 Preview</span>
+          <span>100%</span>
+        </div>
+
+        <div class="nav" id="navButtons">
+          <button class="active" data-tab="graphics">2.2 Graphics</button>
+          <button data-tab="animation">2.3 Animation</button>
+          <button data-tab="gestures">2.4 Gestures</button>
+        </div>
+
+        <div class="workspace">
+          <section class="pane active" id="pane-graphics">
+            <div class="pane-top">
+              <div>
+                <div class="pane-title">Task 2.2 · simple graphic objects</div>
+                <div class="pane-kicker">Circle segment and right trapezoid with theme controls.</div>
+              </div>
+              <div class="toolbar graph-themes" id="themeButtons">
+                <button class="active" data-theme="0">Dawn</button>
+                <button data-theme="1">Ocean</button>
+                <button data-theme="2">Aurora</button>
+                <button data-theme="3">Sunset</button>
+              </div>
+            </div>
+
+            <div class="graphic-panel">
+              <div class="figure-row">
+                <div class="figure-box">
+                  <div class="svg-wrap">
+                    <svg width="100%" height="100%" viewBox="0 0 420 300" aria-label="Circle segment">
+                      <defs>
+                        <linearGradient id="segmentGrad" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stop-color="#eeb962" />
+                          <stop offset="55%" stop-color="#f7d19d" />
+                          <stop offset="100%" stop-color="#fff1c9" />
+                        </linearGradient>
+                      </defs>
+                      <g transform="translate(210 130)">
+                        <path class="segment" d="M 0 0 A 86 86 0 1 1 -2 0 L 0 0 Z" transform="translate(0 10)" />
+                        <circle cx="0" cy="10" r="86" fill="none" stroke="rgba(255,255,255,0.24)" stroke-width="1.5" />
+                        <line x1="0" y1="10" x2="62" y2="-42" stroke="rgba(255,255,255,0.24)" stroke-width="1.2" />
+                        <line x1="0" y1="10" x2="-56" y2="-50" stroke="rgba(255,255,255,0.24)" stroke-width="1.2" />
+                      </g>
+                    </svg>
+                  </div>
+                  <div class="caption">
+                    <span>Figure 1</span>
+                    <span>Circle segment</span>
+                  </div>
+                </div>
+                <div class="figure-box">
+                  <div class="svg-wrap">
+                    <svg width="100%" height="100%" viewBox="0 0 420 300" aria-label="Right trapezoid">
+                      <defs>
+                        <linearGradient id="trapGrad" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0%" stop-color="#69a0ff" />
+                          <stop offset="100%" stop-color="#a4d5ff" />
+                        </linearGradient>
+                      </defs>
+                      <g transform="translate(208 130)">
+                        <path class="trapezoid" d="M -140 -30 L 88 -30 L 110 70 L -108 70 Z" />
+                        <path d="M -140 -30 L 88 -30 L 110 70 L -108 70 Z" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" />
+                        <line x1="-108" y1="70" x2="-108" y2="-30" stroke="rgba(255,255,255,0.18)" stroke-width="1.2" />
+                      </g>
+                    </svg>
+                  </div>
+                  <div class="caption">
+                    <span>Figure 2</span>
+                    <span>Right trapezoid</span>
+                  </div>
+                </div>
+              </div>
+              <div class="legend">
+                <span>Core Graphics</span>
+                <span>Bezier paths</span>
+                <span>Gradient fill</span>
+                <span>Shadow</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="pane" id="pane-animation">
+            <div class="pane-top">
+              <div>
+                <div class="pane-title">Task 2.3 · animation effects</div>
+                <div class="pane-kicker">Move, rotate, scale, opacity and a combined effect.</div>
+              </div>
+              <div class="toolbar effect-buttons" id="effectButtons">
+                <button class="active" data-effect="move"><strong>Move</strong><span>Translation</span></button>
+                <button data-effect="rotate"><strong>Rotate</strong><span>Rotation</span></button>
+                <button data-effect="scale"><strong>Scale</strong><span>Size change</span></button>
+                <button data-effect="opacity"><strong>Opacity</strong><span>Fade</span></button>
+                <button data-effect="combined"><strong>Combo</strong><span>Multi effect</span></button>
+              </div>
+            </div>
+
+            <div class="animation-stage" id="animationStage" data-effect="move">
+              <div class="motion-group">
+                <div class="motion-item segment"></div>
+                <div class="motion-item trapezoid"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="pane" id="pane-gestures">
+            <div class="pane-top">
+              <div>
+                <div class="pane-title">Task 2.4 · gestures</div>
+                <div class="pane-kicker">Five gesture states update the figure background.</div>
+              </div>
+              <div class="toolbar gesture-buttons" id="gestureButtons">
+                <button class="active" data-gesture="rotation"><strong>Rotation</strong><span>Blue</span></button>
+                <button data-gesture="pinch"><strong>Pinch</strong><span>Red</span></button>
+                <button data-gesture="tap"><strong>Tap</strong><span>Green</span></button>
+                <button data-gesture="longpress"><strong>Long press</strong><span>Orange</span></button>
+                <button data-gesture="swipe"><strong>Swipe</strong><span>Gray</span></button>
+              </div>
+            </div>
+
+            <div class="gesture-stage" id="gestureStage" data-gesture="rotation">
+              <div class="background-tile"></div>
+              <div class="gesture-shape">
+                <div class="badge" id="gestureBadge">
+                  Rotation
+                  <br />
+                  Blue background
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="footer">
+          <span><strong>Lab 7</strong> preview pack</span>
+          <span>Variant 17 · Swift MVC</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const panes = {
+      graphics: document.getElementById("pane-graphics"),
+      animation: document.getElementById("pane-animation"),
+      gestures: document.getElementById("pane-gestures")
+    };
+    const navButtons = [...document.querySelectorAll("[data-tab]")];
+    const themeButtons = [...document.querySelectorAll("[data-theme]")];
+    const effectButtons = [...document.querySelectorAll("[data-effect]")];
+    const gestureButtons = [...document.querySelectorAll("[data-gesture]")];
+    const animationStage = document.getElementById("animationStage");
+    const gestureStage = document.getElementById("gestureStage");
+    const gestureBadge = document.getElementById("gestureBadge");
+
+    const gestureCopy = {
+      rotation: ["Rotation", "Blue background"],
+      pinch: ["Pinch", "Red background"],
+      tap: ["Tap", "Green background"],
+      longpress: ["Long press", "Orange background"],
+      swipe: ["Swipe", "Gray background"]
+    };
+
+    function setTab(tab) {
+      Object.entries(panes).forEach(([name, pane]) => {
+        pane.classList.toggle("active", name === tab);
+      });
+      navButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tab));
+    }
+
+    function setActiveButton(buttons, key, attrName) {
+      buttons.forEach(btn => btn.classList.toggle("active", btn.dataset[attrName] === key));
+    }
+
+    navButtons.forEach(button => {
+      button.addEventListener("click", () => setTab(button.dataset.tab));
+    });
+
+    themeButtons.forEach(button => {
+      button.addEventListener("click", () => setActiveButton(themeButtons, button.dataset.theme, "theme"));
+    });
+
+    effectButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const effect = button.dataset.effect;
+        animationStage.dataset.effect = effect;
+        setActiveButton(effectButtons, effect, "effect");
+      });
+    });
+
+    gestureButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const gesture = button.dataset.gesture;
+        gestureStage.dataset.gesture = gesture;
+        const [title, subtitle] = gestureCopy[gesture];
+        gestureBadge.innerHTML = `${title}<br>${subtitle}`;
+        setActiveButton(gestureButtons, gesture, "gesture");
+      });
+    });
+  </script>
+</body>
+</html>
